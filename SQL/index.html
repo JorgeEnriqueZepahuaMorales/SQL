@@ -1,0 +1,410 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Codigo en SQL Jorge Enrique Zepahua Morales</title>
+<link href="style.css" rel="stylesheet" media="all">
+</head>
+<body>
+
+
+        <div  class="box1">
+            <p>
+			create database dbrate
+create table universidad
+(
+nombre char(20) not null,
+telefono numeric not null,
+calle char(20) not null,
+numero numeric not null,
+colonia char(20) not null,
+nom_dir char(20) not null,
+ap_dir char(20) not null,
+am_dir char(20) not null,
+num_edificio numeric not null,
+primary key (num_edificio))
+
+create table departamento
+(
+nombre_depto char(20) not null,
+telefono numeric not null,
+extension numeric not null,
+num_est_esp numeric not null,
+num_salon numeric not null,
+num_edificio numeric not null,
+nom_dir char(20) not null,
+ap_dir char(20) not null,
+am_dir char(20) not null,
+mat_est numeric not null,
+primary key (num_salon),
+foreign key (mat_est) references estudiantes,
+foreign key (num_edificio) references universidad)
+
+create table profesores
+(
+n_prof char(20) not null,
+ap_prof char(20) not null,
+am_prof char(20) not null,
+num_salon numeric not null,
+telefono numeric not null,
+id_prof numeric not null,
+primary key (id_prof),
+foreign key (num_salon) references  departamento)
+
+create table estudiantes
+(
+nombre char(20) not null,
+a_paterno char(20) not null,
+a_materno char(20) not null,
+telefono numeric not null,
+fecha_ins date not null,
+mat_est numeric not null,
+num_salon numeric not null,
+calle char(20) not null,
+numero numeric not null,
+colonia char(20) not null,
+primary key (mat_est),
+foreign key (num_salon) references departamento)
+
+
+Para insertar datos.
+
+insert into universidad
+values('TESCI', 52168984,'azucena', 3, 'ferrocarrilera' ,  'juan', 'Perez' , 'Morales' ,20 );
+insert into universidad
+values('TESCI', 58452012, 'cumbria' ,  5 , 'infonavit',  'salvador', 'Perez' , 'Morales' ,8 );
+insert into universidad
+values('TESCI', 89858485, 'atlamica' ,  4 , 'claustros', 'jorge', 'portilo' , 'Maldonado' ,2 );
+insert into universidad
+values('TESCI', 23111454, 'infonavit' ,  6 , 'neptuno',  'Mariel', 'Sanchez' , 'Moctzuma' ,5 );
+insert into universidad
+values('TESCI', 45858778, 'ferrocarrilera' ,  8 ,'cetim',  'Jose', 'Andrade' , 'Moral' ,3 );
+
+
+select *
+from universidad
+
+
+
+
+insert into departamento
+values ('matematicas',58804120,45,5,8,20,'donovan','perez','sanchez',480);
+insert into departamento
+values ('informatica',58124578,4,8,9,8,'donovan','perez','sanchez',481);
+insert into departamento
+values ('matematicas',58804120,45,1,10,2,'donovan','perez','sanchez',482);
+insert into departamento
+values ('taller',58895623,15,6,11,5,'donovan','perez','sanchez',483);
+insert into departamento
+values ('industrial',58784512,19,4,12,5,'donovan','perez','sanchez',484);
+
+
+
+
+
+insert into profesores
+values('Luz Ma', 'Alvarez', 'Monrroy', 8, 54896487, 10);
+insert into profesores
+values('Elizabeth', 'Baehna', 'Martinez', 9, 58963215, 20);
+insert into profesores
+values('Ricardo', 'Ramirez', 'Gomez', 10, 58974562, 30);
+insert into profesores
+values('Mauricio', 'Hernandez', 'Garcia', 11, 58965458, 40);
+insert into profesores
+values('Miguel', 'Mendez', 'Mireles', 12, 56328974, 50);
+
+
+
+
+
+
+
+insert into estudiantes
+values('Juan', 'Perez', 'Lopez', 58748968, '12/09/13', 480, 8,'Azucena', 5, 'Infonavit',10);
+insert into estudiantes
+values('Jaime', 'Juarez', 'Ramirez', 25698745, '13-02/13', 481,  9,  'Petunia', 6, 'Cumbria',10);
+insert into estudiantes
+values('Ricardo', 'Mejia', 'Malfavon',26113698, '13/09/14',  482, 10,  'Naranjo', 7, 'Ferrocarrilera',9);
+insert into estudiantes
+values('Jose', 'Jimenez', 'Maldonado', 26359874,'19/09/14', 483,11,   'Manzano', 8, 'Ensueños',9);
+insert into estudiantes
+values('Jimena', 'Mendoza', 'Alvarez',26117896,'14/09/14',484,   12,   'Tulipan', 9, 'Atlanta',10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create procedure insertar_universidad 
+@nombre char(20),
+@telefono numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@nom_dir char(20),
+@ap_dir char(20) ,
+@am_dir char(20) ,
+@num_edificio numeric 
+as
+
+insert INTO universidad(nombre, telefono ,calle ,numero,colonia ,nom_dir,ap_dir ,am_dir ,num_edificio )
+values (@nombre, @telefono ,@calle ,@numero,@colonia ,@nom_dir,@ap_dir ,@am_dir ,@num_edificio )
+ 
+EXEC insertar_universidad 'TESCI', 52168984,'azucena', 3, 'ferrocarrilera' ,  'juan', 'Perez' , 'Morales' ,255
+
+
+
+
+
+
+
+
+create procedure modificar_universidad 
+@nombre char(20),
+@telefono numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@nom_dir char(20),
+@ap_dir char(20) ,
+@am_dir char(20) ,
+@num_edificio numeric 
+as
+update universidad
+set nombre=@nombre, telefono=@telefono ,calle=@calle ,numero=@numero,colonia=@colonia ,nom_dir,ap_dir ,am_dir ,num_edificio 
+values @nombre, @telefono ,@calle ,@numero,@colonia ,@nom_dir,@ap_dir ,@am_dir ,@num_edificio 
+
+EXEC modificar_universidad 'TESCI',0445512524,'azucena', 3, 'ferrocarrilera' ,  'juan', 'Perez' , 'Morales' ,255
+EXEC modificar_universidad 'TESCI', 044557889521,'florescs', 3, 'infona' ,  'saul', 'telez' , 'Medina' ,256
+
+
+
+create procedure eliminar_universidad 
+@nombre char(20),
+@telefono numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@nom_dir char(20),
+@ap_dir char(20) ,
+@am_dir char(20) ,
+@num_edificio numeric 
+as
+delete universidad 
+from universidad 
+where num_edificio=@num_edificio 
+
+EXEC eliminar_universidad 'TESCI', 044557889521,'florescs', 3, 'infona' ,  'saul', 'telez' , 'Medina' ,256
+
+
+
+
+
+
+create procedure insertar_departamento 
+@nombre_depto char(20),
+@telefono numeric,
+@extension numeric ,
+@num_est_esp numeric ,
+@num_salon numeric ,
+@num_edificio numeric ,
+@nom_dir char(20),
+@ap_dir char(20),
+@am_dir char(20),
+@mat_est numeric
+as
+insert INTO departamento ( nombre_depto ,telefono ,extension ,num_est_esp ,num_salon  ,num_edificio  ,nom_dir  ,ap_dir  ,am_dir  ,mat_est)
+values (@nombre_depto ,@telefono ,@extension ,@num_est_esp ,@num_salon  ,@num_edificio  ,@nom_dir  ,@ap_dir  ,@am_dir  ,@mat_est)
+
+EXEC insertar_departamento 'matematicas',58804120,45,5,100,2,'donovan','perez','sanchez',490
+EXEC insertar_departamento 'informatica',58124578,4,8,101,2,'donovan','perez','sanchez',490
+
+
+
+
+create procedure modificar_departamento 
+@nombre_depto char(20),
+@telefono numeric,
+@extension numeric ,
+@num_est_esp numeric ,
+@num_salon numeric ,
+@num_edificio numeric ,
+@nom_dir char(20),
+@ap_dir char(20),
+@am_dir char(20),
+@mat_est numeric
+as
+update departamento 
+set  nombre_depto=@nombre_depto ,telefono=@telefono ,extension=@extension ,num_est_esp=@num_est_esp ,num_salon  ,num_edificio  ,nom_dir  ,ap_dir  ,am_dir  ,mat_est)
+where num_salon=@num_salon 
+
+EXEC insertar_departamento 'matematicas',58804120,45,5,100,2,'donovan','perez','sanchez',490
+EXEC insertar_departamento 'informatica',58124578,4,8,101,2,'donovan','perez','sanchez',490
+
+
+
+
+create procedure eliminar_departamento 
+@nombre_depto char(20),
+@telefono numeric,
+@extension numeric ,
+@num_est_esp numeric ,
+@num_salon numeric ,
+@num_edificio numeric ,
+@nom_dir char(20),
+@ap_dir char(20),
+@am_dir char(20),
+@mat_est numeric
+as
+delete departamento 
+from departamento
+where num_salon=@num_salon 
+
+EXEC eliminar_departamento 'informatica',58124578,4,8,101,2,'donovan','perez','sanchez',490
+
+
+
+
+
+create procedure insertar_profesores
+@n_prof char(20) ,
+@ap_prof char(20,
+@am_prof char(20),
+@num_salon numeric ,
+@telefono numeric ,
+@id_prof numeric 
+as 
+insert into profesores (n_prof ,ap_prof ,am_prof ,num_salon ,telefono ,id_prof numeric) 
+values(@n_prof ,@ap_prof ,@am_prof ,@num_salon ,@telefono ,@id_prof numeric)
+
+
+EXEC insertar_profesores 'Marta', 'Lopez', 'Andrade', 9, 54889787, 60
+EXEC insertar_profesores 'Elizabeth', 'Roblez', 'Martinez', 10, 99963215, 70
+
+
+create procedure modificar_profesores
+@n_prof char(20) ,
+@ap_prof char(20,
+@am_prof char(20),
+@num_salon numeric ,
+@telefono numeric ,
+@id_prof numeric 
+as 
+update profesores
+set n_prof=@n_prof ,ap_prof=@ap_prof ,am_prof=@am_prof ,num_salon=@num_salon ,telefono=@telefono ,id_prof=@id_prof numeric 
+values @n_prof ,@ap_prof ,@am_prof ,@num_salon ,@telefono , @id_prof 
+
+EXEC modificar_profesores 'Gloriaa', 'Mendez', 'Monrroy', 8, 54896487, 10
+EXEC modificar_profesores 'Marcos', 'Roocha', 'Martinez', 9, 58963215, 20
+
+
+create procedure eliminar_profesores
+@n_prof char(20) ,
+@ap_prof char(20,
+@am_prof char(20),
+@num_salon numeric ,
+@telefono numeric ,
+@id_prof numeric 
+as 
+delete profesores
+from profesores
+where id_prof=@id_prof
+
+EXEC eliminar_profesores 'Gloria', 'Mendez', 'Monrroy', 8, 54896487, 10
+EXEC eliminar_profesores 'Marcos', 'Roocha', 'Martinez', 9, 58963215, 20
+
+
+
+
+
+
+
+create procedure insertar_estudiantes 
+@nombre char(20),
+@a_paterno char(20) ,
+@a_materno char(20) ,
+@telefono numeric ,
+@fecha_ins date ,
+@mat_est numeric ,
+@num_salon numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@calificacion numeric
+as
+insert INTO estudiantes (nombre ,a_paterno , a_materno ,telefono , fecha_ins ,mat_est ,num_salon  ,calle ,numero  ,colonia, calificacion )
+values (@nombre ,@a_paterno , @a_materno ,@telefono , @fecha_ins ,@mat_est ,@num_salon  ,@calle ,@numero  ,@colonia, @calificacion )
+
+EXEC insertar_estudiantes 'Juan', 'Perez', 'Lopez', 58748968, '12/09/13', 480, 8,'Azucena', 5, 'Infonavit',10
+EXEC insertar_estudiantes 'Jaime', 'Juarez', 'Ramirez', 25698745, '13-02/13', 481,  9,  'Petunia', 6, 'Cumbria',10
+
+
+create procedure modificar_estudiantes 
+@nombre char(20),
+@a_paterno char(20) ,
+@a_materno char(20) ,
+@telefono numeric ,
+@fecha_ins date ,
+@mat_est numeric ,
+@num_salon numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@calificacion numeric
+as
+update estudiantes
+set nombre=@nombre ,a_paterno=@a_paterno,a_materno=@a_materno ,telefono=@telefono ,fecha_ins=@fecha_ins  ,mat_est=@mat_est ,num_salon=@num_salon numeric ,calle=@calle ,numero=@numero,colonia=@colonia, calificacion=@calificacion 
+values @nombre ,@a_paterno , @a_materno ,@telefono , @fecha_ins ,@mat_est ,@num_salon  ,@calle ,@numero  ,@colonia , @calificacion
+
+EXEC modificar_estudiantes 'Juan', 'Perez', 'Lopez', 58748968, '12/09/13', 480, 8,'Azucena', 5, 'Nayarit',10
+EXEC modificar_estudiantes 'Jaime', 'Juarez', 'Ramirez', 25698745, '13-02/13', 481,  9,  'Petunia', 6, 'Atlamica',9
+
+
+
+create procedure eliminar_estudiantes 
+@nombre char(20),
+@a_paterno char(20) ,
+@a_materno char(20) ,
+@telefono numeric ,
+@fecha_ins date ,
+@mat_est numeric ,
+@num_salon numeric ,
+@calle char(20) ,
+@numero numeric ,
+@colonia char(20),
+@calificacion numeric
+as
+delete estudiantes
+from estudiantes
+where mat_est=@mat_est
+
+EXEC elminar_estudiantes 'Jaime', 'Juarez', 'Ramirez', 25698745, '13-02/13', 481,  9,  'Petunia', 6, 'Atlamica', 8
+
+
+
+
+
+
+
+
+
+			
+			
+			
+			</p>
+        </div>
+
+     
+
+
+</body>
+</html>
